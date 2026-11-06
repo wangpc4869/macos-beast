@@ -1,0 +1,90 @@
+{
+  "name": "niuma-timer",
+  "version": "1.0.0",
+  "private": true,
+  "description": "牛马一生：上班时看着薪水往上长的 macOS 客户端",
+  "main": "./out/main/index.js",
+  "scripts": {
+    "icon": "tsx scripts/wpc_make_icon.ts",
+    "predev": "tsx scripts/wpc_make_icon.ts",
+    "postinstall": "electron_config_cache=./.cache/electron ELECTRON_MIRROR=https://npmmirror.com/mirrors/electron/ node node_modules/electron/install.js",
+    "dev": "electron_config_cache=./.cache/electron ELECTRON_MIRROR=https://npmmirror.com/mirrors/electron/ ELECTRON_BUILDER_CACHE=./.cache/electron-builder electron-vite dev",
+    "test": "tsx scripts/wpc_test_engine.ts",
+    "typecheck": "tsc --noEmit",
+    "build": "tsx scripts/wpc_make_icon.ts && electron-vite build",
+    "dist:mac": "CSC_IDENTITY_AUTO_DISCOVERY=false electron_config_cache=\"$PWD/.cache/electron\" ELECTRON_MIRROR=https://npmmirror.com/mirrors/electron/ ELECTRON_BUILDER_CACHE=\"$PWD/.cache/electron-builder\" npm run build && CSC_IDENTITY_AUTO_DISCOVERY=false electron_config_cache=\"$PWD/.cache/electron\" ELECTRON_MIRROR=https://npmmirror.com/mirrors/electron/ ELECTRON_BUILDER_CACHE=\"$PWD/.cache/electron-builder\" electron-builder --mac && chmod +x \"build/卸载牛马一生.command\" \"build/首次打开-修复损坏.command\" && cp -f \"build/卸载牛马一生.command\" \"build/首次打开-修复损坏.command\" release/",
+    "open": "open \"release/mac-arm64/牛马一生.app\""
+  },
+  "build": {
+    "appId": "app.wpc.niuma-timer",
+    "productName": "牛马一生",
+    "asar": true,
+    "afterPack": "./scripts/wpc_after_pack.cjs",
+    "directories": {
+      "output": "release",
+      "buildResources": "build"
+    },
+    "electronDownload": {
+      "cache": ".cache/electron"
+    },
+    "files": [
+      "out/**/*",
+      "package.json"
+    ],
+    "mac": {
+      "category": "public.app-category.productivity",
+      "icon": "build/icon.png",
+      "identity": null,
+      "gatekeeperAssess": false,
+      "hardenedRuntime": false,
+      "extendInfo": {
+        "CFBundleDisplayName": "牛马一生",
+        "CFBundleName": "牛马一生"
+      },
+      "target": [
+        {
+          "target": "dir",
+          "arch": [
+            "arm64"
+          ]
+        },
+        {
+          "target": "dmg",
+          "arch": [
+            "arm64"
+          ]
+        }
+      ]
+    },
+    "dmg": {
+      "title": "牛马一生",
+      "contents": [
+        {
+          "x": 130,
+          "y": 180,
+          "type": "file"
+        },
+        {
+          "x": 410,
+          "y": 180,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    }
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.2.1",
+    "electron": "^45.2.2",
+    "electron-builder": "^26.18.0",
+    "electron-vite": "^6.0.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.5"
+  }
+}

@@ -1,0 +1,10 @@
+node_modules
+out
+release
+dist
+.cache
+.npm-cache
+*.log
+.DS_Store
+牛马计时器.app
+牛马一生.app
